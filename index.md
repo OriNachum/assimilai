@@ -9,7 +9,7 @@ title: Home
 </div>
 
 <div class="star-badge">
-  <iframe src="https://ghbtns.com/github-btn.html?user=OriNachum&repo=assimilai&type=star&count=true" frameborder="0" scrolling="0" width="150" height="20" title="GitHub Stars"></iframe>
+  <iframe src="https://ghbtns.com/github-btn.html?user=OriNachum&repo=assimilai&type=star&count=true" frameborder="0" scrolling="0" width="150" height="20" title="GitHub Stars" loading="lazy" referrerpolicy="no-referrer"></iframe>
 </div>
 
 <div class="post-content" markdown="1">

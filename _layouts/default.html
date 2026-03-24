@@ -11,7 +11,8 @@
   <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
   <script>
     (function() {
-      var theme = localStorage.getItem('theme');
+      var theme;
+      try { theme = localStorage.getItem('theme'); } catch(e) {}
       if (!theme) {
         theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
       }
@@ -24,12 +25,12 @@
   {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "{{ site.title | escape }}",
-    "description": "{{ site.description | escape }}",
-    "url": "{{ site.url }}{{ site.baseurl }}/",
+    "name": {{ site.title | jsonify }},
+    "description": {{ site.description | jsonify }},
+    "url": {{ site.url | append: site.baseurl | append: "/" | jsonify }},
     "author": {
       "@type": "Person",
-      "name": "{{ site.author | escape }}"
+      "name": {{ site.author | jsonify }}
     }
   }
   </script>
@@ -41,9 +42,9 @@
       <a href="{{ '/' | relative_url }}">Home</a>
       <a href="{{ '/spec' | relative_url }}">Spec</a>
       <a href="{{ '/about' | relative_url }}">About</a>
-      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
-        <span class="icon-sun">&#9728;</span>
-        <span class="icon-moon">&#9790;</span>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode" aria-pressed="false">
+        <span class="icon-sun" aria-hidden="true">&#9728;</span>
+        <span class="icon-moon" aria-hidden="true">&#9790;</span>
       </button>
     </nav>
   </header>
@@ -66,7 +67,9 @@
       } else {
         document.documentElement.removeAttribute('data-theme');
       }
-      localStorage.setItem('theme', next);
+      var btn = document.querySelector('.theme-toggle');
+      if (btn) btn.setAttribute('aria-pressed', next === 'dark');
+      try { localStorage.setItem('theme', next); } catch(e) {}
     }
   </script>
 </body>
