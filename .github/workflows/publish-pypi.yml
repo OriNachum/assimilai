@@ -26,7 +26,13 @@ jobs:
           python-version: "3.12"
 
       - name: Install build tools
-        run: pip install hatch
+        run: pip install hatch pytest
+
+      - name: Install package
+        run: pip install -e .
+
+      - name: Run tests
+        run: python -m pytest tests/ -v
 
       - name: Build package
         run: hatch build

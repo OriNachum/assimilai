@@ -44,7 +44,7 @@ def init_assimilation(
 
     files: dict[str, dict[str, str]] = {}
     for f in sorted(target_dir.rglob("*")):
-        if f.is_file() and not f.name.startswith("."):
+        if f.is_file() and not any(p.startswith(".") for p in f.relative_to(target_dir).parts):
             rel = str(f.relative_to(target_dir))
             files[rel] = {"status": "verbatim", "sha256": _sha256(f)}
 
@@ -81,14 +81,16 @@ def check_assimilation(
         print("no assimilai packages found")
         return True
 
-    entries = {name: packages[name]} if name else packages
+    if name:
+        if name not in packages:
+            print(f"error: package '{name}' not found")
+            return False
+        entries = {name: packages[name]}
+    else:
+        entries = packages
     all_ok = True
 
     for pkg_name, pkg in entries.items():
-        if pkg_name not in packages:
-            print(f"error: package '{pkg_name}' not found")
-            all_ok = False
-            continue
 
         target = Path(pkg.get("target", "."))
         files = pkg.get("files", {})

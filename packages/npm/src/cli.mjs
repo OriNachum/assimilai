@@ -31,8 +31,9 @@ function parseArgs(argv) {
     const arg = argv[i];
     if (arg === '--help' || arg === '-h') {
       args.flags.help = true;
-    } else if (arg === '--version') {
-      args.flags.version = true;
+    } else if (arg === '--version' && args.positional.length === 0) {
+      // Only treat --version as the CLI version flag when no command yet
+      args.flags.cliVersion = true;
     } else if (arg.startsWith('--')) {
       const key = arg.slice(2);
       args.flags[key] = argv[++i] || '';
@@ -51,7 +52,7 @@ export function run(argv) {
     printHelp();
     return;
   }
-  if (flags.version) {
+  if (flags.cliVersion) {
     console.log(`assimilai ${pkg.version}`);
     return;
   }
