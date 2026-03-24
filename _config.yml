@@ -4,6 +4,8 @@ author: Ori Nachum
 url: "https://assimilai.dev"
 baseurl: ""
 
+permalink: pretty
+
 markdown: kramdown
 highlighter: rouge
 
@@ -21,3 +23,4 @@ exclude:
   - Gemfile.lock
   - CLAUDE.md
   - .claude/
+  - docs/assimilai-update-instructions.md
