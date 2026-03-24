@@ -33,16 +33,18 @@ project evolves.
 
 ## Why?
 
-Traditional package management assumes consumers want identical
-behavior from a shared dependency. That breaks down when:
+Assimilai is for codebases where consumers are **expected to
+diverge**. Traditional packages assume every consumer wants
+identical behavior. That assumption fails when:
 
-- **Each consumer needs to diverge** — agent backends wrap
-  different SDKs and CLIs, each with unique integration points
-- **Shared imports create coupling** — a change in one backend's
-  copy of a module shouldn't break another backend
-- **Dependency updates are forced on everyone** — with Assimilai,
-  each project upgrades on its own schedule by pulling from the
-  latest reference
+- **Divergence is the point** — each agent backend wraps a
+  different SDK with unique integration points, so shared code
+  must bend to fit each consumer's shape
+- **Independence prevents breakage** — a change in one backend's
+  copy of a module cannot break another, because there are no
+  shared imports to propagate through
+- **Upgrades happen on each consumer's schedule** — no forced
+  dependency bumps, no coordinated releases across backends
 
 Assimilai trades deduplication for independence. The reference
 stays maintained so future consumers start from the best available
@@ -78,6 +80,12 @@ A dissolved file has no standalone copy — its functions and classes
 were absorbed into a file that already existed in the consumer
 project. The assimilated code becomes indistinguishable from the
 consumer's own code.
+
+**Example:** The reference has a standalone `config.py` with a
+`load_config()` function. In the Claude backend, this function
+was absorbed into the existing `settings.py` — no standalone
+`config.py` exists. The metadata records:
+`"config.py" = { status = "dissolved", into = "settings.py" }`
 
 ## Specification
 
@@ -132,15 +140,33 @@ assimilated = "2026-03-24"
 
 ### Propagation
 
-When the reference updates:
+When the reference package updates, propagation follows a simple
+contract — the answer to "how does this not become a maintenance
+nightmare?"
 
-- **Verbatim** files are replaced, hash updated
-- **Adapted** files are flagged for review, not overwritten
-- **Dissolved** files are flagged for review, not touched
+| File status | Action on update |
+| --- | --- |
+| **Verbatim** | Replace file, update hash |
+| **Adapted** | Flag for review, do not overwrite |
+| **Dissolved** | Flag for review, do not touch |
+
+Propagation can be performed by an AI coding agent reading the
+metadata, or manually.
 
 See the [full specification]({{ '/spec' | relative_url }}) for
-complete field reference, propagation rules, and real-world
-examples.
+complete field reference and real-world examples.
+
+## When Not to Use Assimilai
+
+If your environment requires provenance to a specific published
+artifact — compliance, regulated industries, SBOM traceability
+back to an exact audited package version — traditional dependencies
+remain the right choice. Dissolving code into your own files breaks
+that chain of custody by design.
+
+Similarly, if shared code must stay identical across all consumers
+(crypto primitives, protocol parsers), Assimilai is the wrong tool.
+Use a versioned package with pinned dependencies instead.
 
 ## Origin
 
@@ -149,6 +175,8 @@ Assimilai was developed as part of
 AI agent backends (Claude, Codex, and others) need to share
 infrastructure code (IRC transport, IPC, socket servers) while
 maintaining full independence in their agent-specific integration
-layers.
+layers. Claude's backend dissolved `config.py` into its own
+`settings.py`, while Codex kept it verbatim — same reference,
+different assimilation strategies.
 
 </div>

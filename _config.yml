@@ -21,3 +21,4 @@ exclude:
   - Gemfile.lock
   - CLAUDE.md
   - .claude/
+  - docs/assimilai-update-instructions.md
