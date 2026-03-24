@@ -59,7 +59,7 @@ jobs:
           echo "Publishing ${DEV_VERSION} (dry-run) to verify"
 
       - name: Dry-run publish
-        run: npm publish --dry-run --access public
+        run: npm publish --dry-run --access public --tag dev
 
       - name: Print install command
         run: |

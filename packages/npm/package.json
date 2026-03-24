@@ -21,7 +21,7 @@
   "homepage": "https://assimilai.dev",
   "repository": {
     "type": "git",
-    "url": "https://github.com/OriNachum/assimilai.git",
+    "url": "git+https://github.com/OriNachum/assimilai.git",
     "directory": "packages/npm"
   },
   "engines": {
