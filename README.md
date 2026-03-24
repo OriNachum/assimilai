@@ -44,6 +44,87 @@ version, but once you copy it, it's yours.
 5. **Improve the reference** — when you fix something generic,
    update `packages/` so the next consumer benefits
 
+## Organic Placement
+
+Assimilated code doesn't need to preserve the reference's file
+structure. Code goes where it naturally belongs in the consumer
+project — even inside existing files.
+
+Three placement modes:
+
+| Mode | Description |
+| ------ | ------------- |
+| **Verbatim** | Copied as a standalone file, unchanged |
+| **Adapted** | Copied as a standalone file, then modified |
+| **Dissolved** | Merged into an existing consumer file |
+
+A dissolved file has no standalone copy — its functions and
+classes were absorbed into a file that already existed in the
+consumer project. The assimilated code becomes indistinguishable
+from the consumer's own code.
+
+## Specification
+
+Assimilai metadata tracks what was assimilated, from where,
+and in what state. It lives in:
+
+- **Python:** `[tool.assimilai]` in `pyproject.toml`
+- **Node.js:** `"assimilai"` key in `package.json`
+
+### Python example
+
+```toml
+[tool.assimilai.packages.harness-claude]
+source = "../packages/agent-harness"
+version = "0.6.0"
+target = "agentirc/clients/claude"
+assimilated = "2026-03-24"
+
+[tool.assimilai.packages.harness-claude.files]
+"daemon.py" = { status = "adapted" }
+"irc_transport.py" = { status = "verbatim", sha256 = "e3b0c44..." }
+"config.py" = { status = "dissolved", into = "clients/claude/settings.py" }
+```
+
+### Node.js example
+
+```json
+{
+  "assimilai": {
+    "packages": {
+      "harness-claude": {
+        "source": "../packages/agent-harness",
+        "version": "0.6.0",
+        "target": "src/clients/claude",
+        "assimilated": "2026-03-24",
+        "files": {
+          "daemon.js": { "status": "adapted" },
+          "transport.js": {
+            "status": "verbatim",
+            "sha256": "e3b0c44..."
+          },
+          "config.js": {
+            "status": "dissolved",
+            "into": "src/clients/claude/settings.js"
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+### Propagation
+
+When the reference updates:
+
+- **Verbatim** files are replaced, hash updated
+- **Adapted** files are flagged for review, not overwritten
+- **Dissolved** files are flagged for review, not touched
+
+See [spec/assimilai-v1.md](spec/assimilai-v1.md) for the full
+specification.
+
 ## Origin
 
 Assimilai was developed as part of
