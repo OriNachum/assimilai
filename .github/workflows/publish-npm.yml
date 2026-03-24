@@ -1,0 +1,90 @@
+name: Publish npm Package
+
+on:
+  push:
+    branches: [main]
+    paths: ["packages/npm/**"]
+  pull_request:
+    branches: [main]
+    paths: ["packages/npm/**"]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packages/npm
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Run tests
+        run: npm test
+
+      - name: Verify package
+        run: npm pack --dry-run
+
+  test-publish:
+    if: github.event_name == 'pull_request'
+    needs: test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packages/npm
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Update npm
+        run: npm install -g npm@latest
+
+      - name: Set dev version
+        run: |
+          BASE=$(node -p "require('./package.json').version")
+          DEV_VERSION="${BASE}-dev.${{ github.run_number }}"
+          npm version "${DEV_VERSION}" --no-git-tag-version
+          echo "DEV_VERSION=${DEV_VERSION}" >> "$GITHUB_ENV"
+          echo "Publishing ${DEV_VERSION} (dry-run) to verify"
+
+      - name: Dry-run publish
+        run: npm publish --dry-run --access public --tag dev
+
+      - name: Print install command
+        run: |
+          echo "::notice::Package validated: assimilai@${DEV_VERSION} (dry-run only)"
+
+  publish:
+    if: github.event_name == 'push'
+    needs: test
+    runs-on: ubuntu-latest
+    environment: npm
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Update npm
+        run: npm install -g npm@latest
+
+      - name: Publish to npm
+        run: npm publish --provenance --access public
+        working-directory: packages/npm

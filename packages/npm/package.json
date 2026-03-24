@@ -1,0 +1,33 @@
+{
+  "name": "assimilai",
+  "version": "0.1.0",
+  "description": "Copy, don't import — track assimilated code in package.json",
+  "type": "module",
+  "bin": {
+    "assimilai": "bin/assimilai.mjs"
+  },
+  "files": [
+    "bin/",
+    "src/"
+  ],
+  "keywords": [
+    "assimilai",
+    "code-reuse",
+    "monorepo",
+    "agent"
+  ],
+  "author": "Ori Nachum",
+  "license": "MIT",
+  "homepage": "https://assimilai.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OriNachum/assimilai.git",
+    "directory": "packages/npm"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "node --test tests/core.test.mjs"
+  }
+}
