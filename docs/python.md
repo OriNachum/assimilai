@@ -73,7 +73,9 @@ assimilai check [name]
 - **MISSING** — file was deleted
 - **SKIP** — file is `adapted` or `dissolved` (expected to differ)
 
-Exit code 0 if all verbatim files match, 1 if drift detected.
+Exit code 0 if all verbatim files match; non-zero if any drift
+or missing files are detected, or if a requested package name
+is not found.
 
 ### pyproject.toml schema
 
@@ -81,13 +83,13 @@ Exit code 0 if all verbatim files match, 1 if drift detected.
 [tool.assimilai.packages.harness-claude]
 source = "../packages/agent-harness"
 version = "0.6.0"
-target = "agentirc/clients/claude"
+target = "src/clients/claude"
 assimilated = "2026-03-24"
 
 [tool.assimilai.packages.harness-claude.files]
 "daemon.py" = { status = "adapted" }
 "irc_transport.py" = { status = "verbatim", sha256 = "e3b0c44..." }
-"config.py" = { status = "dissolved", into = "clients/claude/settings.py" }
+"config.py" = { status = "dissolved", into = "src/clients/claude/settings.py" }
 ```
 
 ### File status

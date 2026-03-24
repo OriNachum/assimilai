@@ -79,7 +79,9 @@ assimilai check [name]
 - **MISSING** — file was deleted
 - **SKIP** — file is `adapted` or `dissolved` (expected to differ)
 
-Exit code 0 if all verbatim files match, 1 if drift detected.
+Exit code 0 if all verbatim files match; non-zero if any drift
+or missing files are detected, or if a requested package name
+is not found.
 
 ### package.json schema
 

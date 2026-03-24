@@ -4,6 +4,8 @@ author: Ori Nachum
 url: "https://assimilai.dev"
 baseurl: ""
 
+permalink: pretty
+
 markdown: kramdown
 highlighter: rouge
 

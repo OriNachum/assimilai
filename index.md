@@ -83,9 +83,10 @@ consumer's own code.
 
 **Example:** The reference has a standalone `config.py` with a
 `load_config()` function. In the Claude backend, this function
-was absorbed into the existing `settings.py` — no standalone
-`config.py` exists. The metadata records:
-`"config.py" = { status = "dissolved", into = "settings.py" }`
+was absorbed into the existing `clients/claude/settings.py` — no
+standalone `config.py` exists. The metadata records (paths
+relative to project root):
+`"config.py" = { status = "dissolved", into = "clients/claude/settings.py" }`
 
 ## Specification
 
