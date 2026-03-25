@@ -45,6 +45,9 @@ identical behavior. That assumption fails when:
   shared imports to propagate through
 - **Upgrades happen on each consumer's schedule** — no forced
   dependency bumps, no coordinated releases across backends
+- **Monorepo code stays direct** — in a monorepo you already own
+  the source; publishing internal packages to a registry just to
+  import them back adds ceremony without value
 
 Assimilai trades deduplication for independence. The reference
 stays maintained so future consumers start from the best available

@@ -60,6 +60,7 @@ Assimilai adds value over vendoring when you need to:
 | Situation | Use |
 | --- | --- |
 | Consumers expected to diverge | Assimilai |
+| Monorepo, skip the publish step | Assimilai |
 | Compliance/provenance required | Traditional packages |
 | Code must stay identical | Pinned dependencies |
 | Few consumers, low divergence | Shared internal package |

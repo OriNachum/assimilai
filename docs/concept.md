@@ -38,6 +38,29 @@ The trade-off is explicit: you give up automatic updates in
 exchange for full independence. But the metadata tracks what
 came from where, so updates are informed rather than blind.
 
+### Monorepos
+
+Assimilai is a natural fit for monorepos. In a monorepo, you
+already own the source code for your internal packages — publishing
+them to a registry just to import them back is unnecessary
+ceremony.
+
+Traditional monorepo tooling (npm workspaces, Python namespace
+packages, Bazel targets) uses import-time linking to share code
+between packages. This avoids the publish step, but creates its
+own friction: symlinks, workspace hoisting, version conflicts
+between internal and external dependencies, and debugging through
+package boundaries instead of just reading the file.
+
+Assimilai removes the middleman entirely. Copy from `packages/`
+into your target directory, modify freely, debug directly. The
+code lives where it runs — no indirection, no build-tool magic,
+no "which version of the internal package am I actually using?"
+
+The metadata in `pyproject.toml` or `package.json` tracks what
+came from where, so you maintain provenance without maintaining
+a package registry.
+
 ### Three placement modes
 
 When assimilating code, each file lands in one of three states:
@@ -70,10 +93,13 @@ updates by pulling, but you don't own the code — changes require
 forking or patching. Assimilai gives you full ownership from the
 start.
 
-**Monorepo shared packages** (internal npm packages, Python
-namespace packages) use import-time linking. Changes to the
-shared package affect all consumers simultaneously. Assimilai
-avoids this coupling by design.
+**Monorepo workspace tooling** (npm workspaces, Python namespace
+packages, Bazel) uses import-time linking within the monorepo.
+This avoids the external publish step but couples all consumers
+to the same version of shared code — changes propagate
+immediately to every consumer. Assimilai is also designed for
+monorepos but takes the opposite approach: each consumer gets
+its own copy and evolves independently.
 
 **Assimilai** is closest to vendoring but with three differences:
 you're expected to modify the code, you can dissolve it into
