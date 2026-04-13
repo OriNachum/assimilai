@@ -1,4 +1,4 @@
-name: Publish Python Package
+name: Publish citation-cli (PyPI)
 
 on:
   push:
@@ -65,7 +65,7 @@ jobs:
 
       - name: Print install command
         run: |
-          echo "::notice::Test with: pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ assimilai==${DEV_VERSION}"
+          echo "::notice::Test with: pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ citation-cli==${DEV_VERSION}"
 
   publish:
     if: github.event_name == 'push'

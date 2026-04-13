@@ -1,4 +1,4 @@
-name: Publish npm Package
+name: Publish citation-cli (npm)
 
 on:
   push:
@@ -63,7 +63,7 @@ jobs:
 
       - name: Print install command
         run: |
-          echo "::notice::Package validated: assimilai@${DEV_VERSION} (dry-run only)"
+          echo "::notice::Package validated: citation-cli@${DEV_VERSION} (dry-run only)"
 
   publish:
     if: github.event_name == 'push'

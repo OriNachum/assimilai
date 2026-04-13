@@ -1,4 +1,4 @@
-"""Read/write [tool.assimilai] in pyproject.toml."""
+"""Read/write [tool.citation] in pyproject.toml."""
 
 from __future__ import annotations
 
@@ -30,17 +30,17 @@ def write_pyproject(path: str | Path, data: dict[str, Any]) -> None:
         tomli_w.dump(data, f)
 
 
-def get_assimilai_packages(data: dict[str, Any]) -> dict[str, Any]:
-    """Extract [tool.assimilai.packages] from parsed pyproject data."""
-    return data.get("tool", {}).get("assimilai", {}).get("packages", {})
+def get_citation_packages(data: dict[str, Any]) -> dict[str, Any]:
+    """Extract [tool.citation.packages] from parsed pyproject data."""
+    return data.get("tool", {}).get("citation", {}).get("packages", {})
 
 
-def set_assimilai_package(
+def set_citation_package(
     data: dict[str, Any], name: str, entry: dict[str, Any]
 ) -> dict[str, Any]:
-    """Set a package entry under [tool.assimilai.packages]."""
+    """Set a package entry under [tool.citation.packages]."""
     data.setdefault("tool", {})
-    data["tool"].setdefault("assimilai", {})
-    data["tool"]["assimilai"].setdefault("packages", {})
-    data["tool"]["assimilai"]["packages"][name] = entry
+    data["tool"].setdefault("citation", {})
+    data["tool"]["citation"].setdefault("packages", {})
+    data["tool"]["citation"]["packages"][name] = entry
     return data

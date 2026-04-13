@@ -3,14 +3,14 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "assimilai"
+name = "citation-cli"
 version = "0.1.0"
-description = "Copy, don't import — track assimilated code in pyproject.toml"
+description = "Cite, don't import — track cited code in pyproject.toml with Quote / Paraphrase / Synthesize semantics"
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.10"
 authors = [{ name = "Ori Nachum" }]
-keywords = ["assimilai", "code-reuse", "monorepo", "agent"]
+keywords = ["citation-cli", "cite", "code-reuse", "monorepo", "agent"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
@@ -27,9 +27,9 @@ dependencies = [
 dev = ["pytest>=7.0"]
 
 [project.scripts]
-assimilai = "assimilai.cli:main"
+cite = "citation_cli.cli:main"
 
 [project.urls]
-Homepage = "https://assimilai.dev"
-Repository = "https://github.com/OriNachum/assimilai"
-Specification = "https://assimilai.dev/spec"
+Homepage = "https://citation-cli.culture.dev"
+Repository = "https://github.com/OriNachum/citation-cli"
+Specification = "https://citation-cli.culture.dev/spec"
