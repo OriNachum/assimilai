@@ -1,4 +1,7 @@
 ---
+title: Assimilai v1 (superseded)
+permalink: /spec/assimilai-v1/
+nav_exclude: true
 status: superseded
 superseded_by: citation-cli-v1.md
 ---

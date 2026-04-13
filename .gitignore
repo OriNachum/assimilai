@@ -6,3 +6,9 @@ dist/
 *.egg-info/
 node_modules/
 uv.lock
+
+# Jekyll
+_site/
+.jekyll-cache/
+.sass-cache/
+Gemfile.lock

@@ -1,3 +1,9 @@
+---
+title: Specification
+nav_order: 6
+permalink: /spec/
+---
+
 # Citation CLI Specification v1
 
 Version: 1.0.0

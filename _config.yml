@@ -1,0 +1,57 @@
+title: Citation CLI
+description: >-
+  Cite, don't import — track cited code with Quote / Paraphrase / Synthesize semantics.
+url: "https://citation-cli.culture.dev"
+baseurl: ""
+
+theme: just-the-docs
+permalink: pretty
+
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+# just-the-docs options
+aux_links:
+  "GitHub":
+    - "https://github.com/OriNachum/citation-cli"
+  "Culture":
+    - "https://culture.dev"
+aux_links_new_tab: true
+
+heading_anchors: true
+
+color_scheme: light
+
+footer_content: >-
+  Citation CLI — part of the <a href="https://culture.dev">Culture</a> ecosystem.
+  Source on <a href="https://github.com/OriNachum/citation-cli">GitHub</a>.
+
+author:
+  name: Ori Nachum
+  twitter: AgenticHumanOrg
+
+twitter:
+  username: AgenticHumanOrg
+  card: summary_large_image
+
+social:
+  name: Citation CLI
+  links:
+    - https://github.com/OriNachum/citation-cli
+
+# Exclude non-site files from the build
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - LICENSE
+  - packages/
+  - node_modules/
+  - vendor/
+  - .github/
+  - .venv/
+  - .pytest_cache/
+  - dist/
+  - uv.lock
