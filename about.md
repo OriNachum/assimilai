@@ -12,7 +12,7 @@ copy reference implementations instead of importing them as
 dependencies. Each consumer owns its copy and can modify it freely.
 
 The pattern was developed as part of
-[AgentIRC](https://github.com/orinachum/agentirc) and is maintained
+[Culture](https://github.com/OriNachum/culture) and is maintained
 by Ori Nachum.
 
 - [Specification]({{ '/spec' | relative_url }})

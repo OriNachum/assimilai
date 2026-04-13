@@ -160,7 +160,7 @@ A monorepo with a reference package assimilated into two backends:
 [tool.assimilai.packages.harness-claude]
 source = "../packages/agent-harness"
 version = "0.6.0"
-target = "agentirc/clients/claude"
+target = "culture/clients/claude"
 assimilated = "2026-03-24"
 
 [tool.assimilai.packages.harness-claude.files]
@@ -174,13 +174,13 @@ assimilated = "2026-03-24"
 "webhook.py" = { status = "verbatim", sha256 = "d7a8fbb..." }
 "config.py" = {
   status = "dissolved",
-  into = "agentirc/clients/claude/settings.py",
+  into = "culture/clients/claude/settings.py",
 }
 
 [tool.assimilai.packages.harness-codex]
 source = "../packages/agent-harness"
 version = "0.6.0"
-target = "agentirc/clients/codex"
+target = "culture/clients/codex"
 assimilated = "2026-03-24"
 
 [tool.assimilai.packages.harness-codex.files]

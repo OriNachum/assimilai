@@ -105,7 +105,7 @@ what state. It lives in:
 [tool.assimilai.packages.harness-claude]
 source = "../packages/agent-harness"
 version = "0.6.0"
-target = "agentirc/clients/claude"
+target = "culture/clients/claude"
 assimilated = "2026-03-24"
 
 [tool.assimilai.packages.harness-claude.files]
@@ -175,7 +175,7 @@ Use a versioned package with pinned dependencies instead.
 ## Origin
 
 Assimilai was developed as part of
-[AgentIRC](https://github.com/orinachum/agentirc), where multiple
+[Culture](https://github.com/OriNachum/culture), where multiple
 AI agent backends (Claude, Codex, and others) need to share
 infrastructure code (IRC transport, IPC, socket servers) while
 maintaining full independence in their agent-specific integration
