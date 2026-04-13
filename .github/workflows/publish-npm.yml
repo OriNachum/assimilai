@@ -47,9 +47,6 @@ jobs:
           node-version: "22"
           registry-url: "https://registry.npmjs.org"
 
-      - name: Update npm
-        run: npm install -g npm@latest
-
       - name: Set dev version
         run: |
           BASE=$(node -p "require('./package.json').version")
@@ -81,9 +78,6 @@ jobs:
         with:
           node-version: "22"
           registry-url: "https://registry.npmjs.org"
-
-      - name: Update npm
-        run: npm install -g npm@latest
 
       - name: Publish to npm
         run: npm publish --provenance --access public
