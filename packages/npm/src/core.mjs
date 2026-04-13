@@ -150,7 +150,7 @@ export function migrateManifest({ packageJsonPath = 'package.json', dryRun = fal
   for (const [pkgName, pkg] of Object.entries(legacyPackages)) {
     const newPkg = { schema: SCHEMA_VERSION };
     for (const [key, value] of Object.entries(pkg)) {
-      if (key === 'files') continue;
+      if (key === 'files' || key === 'schema') continue;
       if (key === 'assimilated') newPkg.cited = value;
       else newPkg[key] = value;
     }

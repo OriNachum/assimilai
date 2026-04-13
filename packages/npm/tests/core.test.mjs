@@ -240,4 +240,40 @@ describe('migrateManifest', () => {
     );
     assert.throws(() => migrateManifest({ packageJsonPath }), /unknown status/);
   });
+
+  it('preserves schema v2 even when legacy entry has a schema key', () => {
+    const { packageJsonPath } = setupWorkspace();
+    writeFileSync(
+      packageJsonPath,
+      JSON.stringify(
+        {
+          name: 'test-project',
+          assimilai: {
+            packages: {
+              harness: {
+                schema: 1,
+                source: '../ref',
+                version: '0.6.0',
+                target: 'vendor/harness',
+                assimilated: '2026-03-24',
+                files: {
+                  'transport.js': { status: 'verbatim', sha256: 'abc' },
+                },
+              },
+            },
+          },
+        },
+        null,
+        2
+      )
+    );
+
+    migrateManifest({ packageJsonPath });
+
+    const data = JSON.parse(readFileSync(packageJsonPath, 'utf8'));
+    const pkg = data.citation.packages.harness;
+    assert.equal(pkg.schema, SCHEMA_VERSION);
+    assert.equal(pkg.source, '../ref');
+    assert.equal(pkg.files['transport.js'].status, 'quote');
+  });
 });

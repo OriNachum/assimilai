@@ -175,7 +175,7 @@ def migrate_manifest(
     for pkg_name, pkg in legacy_packages.items():
         new_pkg: dict[str, Any] = {"schema": SCHEMA_VERSION}
         for key, value in pkg.items():
-            if key == "files":
+            if key in ("files", "schema"):
                 continue
             if key == "assimilated":
                 new_pkg["cited"] = value

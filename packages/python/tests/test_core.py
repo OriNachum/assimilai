@@ -262,3 +262,27 @@ def test_migrate_rejects_unknown_status(tmp_path):
     )
     with pytest.raises(ValueError, match="unknown status"):
         migrate_manifest(pyproject_path=str(pyproject))
+
+
+def test_migrate_preserves_schema_v2_when_legacy_has_schema(tmp_path):
+    """A stray `schema` key in a legacy entry must not overwrite the v2 marker."""
+    pyproject = tmp_path / "pyproject.toml"
+    pyproject.write_text(
+        '[project]\nname = "x"\n\n'
+        "[tool.assimilai.packages.harness]\n"
+        "schema = 1\n"  # deliberately wrong — must not clobber the v2 value
+        'source = "../ref"\n'
+        'version = "0.6.0"\n'
+        'target = "vendor/harness"\n'
+        'assimilated = "2026-03-24"\n\n'
+        "[tool.assimilai.packages.harness.files]\n"
+        '"transport.py" = { status = "verbatim", sha256 = "abc" }\n'
+    )
+
+    migrate_manifest(pyproject_path=str(pyproject))
+
+    data = read_pyproject(pyproject)
+    pkg = data["tool"]["citation"]["packages"]["harness"]
+    assert pkg["schema"] == SCHEMA_VERSION
+    assert pkg["source"] == "../ref"
+    assert pkg["files"]["transport.py"]["status"] == "quote"

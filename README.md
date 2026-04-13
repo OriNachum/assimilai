@@ -7,7 +7,8 @@ consumers are expected to diverge.
 > citation-cli is the successor to **assimilai**. Run `cite migrate`
 > to convert any existing `[tool.assimilai]` or `"assimilai"`
 > manifests to the v2 schema. The legacy `assimilai` packages on
-> PyPI and npm are frozen and deprecated.
+> PyPI and npm will be frozen at their current version and marked
+> deprecated once the first `citation-cli` release lands.
 
 ## The idea
 
