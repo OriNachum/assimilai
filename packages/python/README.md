@@ -1,53 +1,65 @@
-# assimilai
+# citation-cli
 
-Copy, don't import — track assimilated code in `pyproject.toml`.
+Cite, don't import — track cited code in `pyproject.toml` with
+**Quote / Paraphrase / Synthesize** semantics.
 
 ## Install
 
 ```bash
-uv tool install assimilai
+uv tool install citation-cli
 ```
 
 Or with pip:
 
 ```bash
-pip install assimilai
+pip install citation-cli
 ```
 
 ## Usage
 
-Record an assimilation — scans files in the target directory
-and records each with its sha256 hash in `pyproject.toml`:
+Record a citation — scans files in the target directory and records
+each as a quote with its sha256 hash in `pyproject.toml`:
 
 ```bash
-assimilai init my-pkg \
+cite add my-pkg \
   --source ../packages/ref \
   --version 1.0.0 \
   --target ./src/clients/my-pkg
 ```
 
-Check integrity of assimilated files — compares sha256 hashes
-of verbatim files, reports drift or missing files:
+Check integrity of cited files — compares sha256 hashes of quoted
+files, reports drift or missing files:
 
 ```bash
-assimilai check
+cite check
 ```
 
 Check a specific package:
 
 ```bash
-assimilai check my-pkg
+cite check my-pkg
 ```
 
 ### File status
 
 Files are tracked with one of three statuses:
 
-- **verbatim** — exact copy, sha256 recorded, checked for drift
-- **adapted** — intentionally modified, skipped during check
-- **dissolved** — merged into existing file, skipped during check
+- **quote** — exact copy, sha256 recorded, checked for drift
+- **paraphrase** — intentionally modified, skipped during check
+- **synthesize** — merged into an existing file, skipped during check
+
+### Migrating from `assimilai`
+
+If you have a legacy `[tool.assimilai]` manifest, migrate it to the
+v2 `[tool.citation]` schema with:
+
+```bash
+cite migrate
+```
+
+Use `--dry-run` to preview the translation without writing.
 
 ## Documentation
 
-- [Specification](https://assimilai.dev/spec)
-- [Website](https://assimilai.dev)
+- [Specification](https://citation-cli.culture.dev/spec)
+- [Website](https://citation-cli.culture.dev)

@@ -1,0 +1,35 @@
+name: Site build check
+
+on:
+  pull_request:
+    paths:
+      - "**.md"
+      - "_config.yml"
+      - "Gemfile"
+      - ".github/workflows/site-check.yml"
+  push:
+    branches: [main]
+    paths:
+      - "**.md"
+      - "_config.yml"
+      - "Gemfile"
+      - ".github/workflows/site-check.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+
+      - uses: ruby/setup-ruby@e65c17d16e57e481586a6a5a0282698790062f92 # v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+
+      - name: Build Jekyll site
+        run: bundle exec jekyll build
+        env:
+          JEKYLL_ENV: production

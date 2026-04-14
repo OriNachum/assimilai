@@ -1,7 +1,3 @@
-_site/
-.jekyll-cache/
-.sass-cache/
-Gemfile.lock
 .venv/
 __pycache__/
 *.pyc
@@ -9,3 +5,10 @@ __pycache__/
 dist/
 *.egg-info/
 node_modules/
+uv.lock
+
+# Jekyll
+_site/
+.jekyll-cache/
+.sass-cache/
+Gemfile.lock

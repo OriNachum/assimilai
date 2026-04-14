@@ -1,54 +1,76 @@
-# Assimilai
+# citation-cli
 
-**Copy, don't import.** A code distribution pattern for AI agent
-ecosystems.
+**Cite, don't import.** A code distribution pattern with
+**Quote / Paraphrase / Synthesize** semantics, for codebases where
+consumers are expected to diverge.
 
-## What is Assimilai?
+> citation-cli is the successor to **assimilai**. Run `cite migrate`
+> to convert any existing `[tool.assimilai]` or `"assimilai"`
+> manifests to the v2 schema. The legacy `assimilai` packages on
+> PyPI and npm will be frozen at their current version and marked
+> deprecated once the first `citation-cli` release lands.
 
-Assimilai is a pattern for sharing code between independent
-projects — particularly AI agent backends. Instead of installing
-shared libraries as dependencies, you **copy reference
-implementations** into your project as organic code. Each consumer
-owns its copy and can modify it independently.
+## The idea
+
+Copy the reference into your project as organic code. Each consumer
+owns its copy and modifies it independently.
 
 ```text
-packages/reference/       -->  copy  -->  clients/backend-a/
-                          -->  copy  -->  clients/backend-b/
-                          -->  copy  -->  clients/backend-c/
+packages/reference/       -->  cite  -->  clients/backend-a/
+                          -->  cite  -->  clients/backend-b/
+                          -->  cite  -->  clients/backend-c/
 ```
 
-No shared imports. No version pinning. No breakage when one
-project evolves.
+No shared imports. No version pinning. No breakage when one project
+evolves.
 
-## CLI Tools
+Each file lands at one of three levels of engagement:
 
-Track assimilated code with metadata in your project manifest.
+- **Quote** — copied verbatim. Integrity checked via sha256.
+- **Paraphrase** — rewritten in your terms. Logic preserved, code
+  adapted.
+- **Synthesize** — absorbed into an existing file. No standalone
+  copy remains.
 
-**Python** — `[tool.assimilai]` in `pyproject.toml`:
+## CLI
+
+Track cited code with metadata in your project manifest.
+
+**Python** — `[tool.citation]` in `pyproject.toml`:
 
 ```bash
-uv tool install assimilai
-assimilai init my-pkg --source ../ref --version 1.0.0 --target ./src/my-pkg
-assimilai check
+uv tool install citation-cli
+cite add my-pkg --source ../ref --version 1.0.0 --target ./src/my-pkg
+cite check
 ```
 
-**Node.js** — `"assimilai"` key in `package.json`:
+**Node.js** — `"citation"` key in `package.json`:
 
 ```bash
-npm install -g assimilai
-assimilai init my-pkg --source ../ref --version 1.0.0 --target ./src/my-pkg
-assimilai check
+npm install -g citation-cli
+cite add my-pkg --source ../ref --version 1.0.0 --target ./src/my-pkg
+cite check
+```
+
+**Migrate from assimilai:**
+
+```bash
+cite migrate             # rewrite in place
+cite migrate --dry-run   # preview
 ```
 
 ## Documentation
 
-- [The Concept](https://assimilai.dev/docs/concept) — why
-  copy beats import
-- [Python CLI](https://assimilai.dev/docs/python) — full
+- [The Concept](https://citation-cli.culture.dev/concept) — why
+  cite beats import
+- [Python CLI](https://citation-cli.culture.dev/python) — full
   reference
-- [npm CLI](https://assimilai.dev/docs/npm) — full reference
-- [When Not to Use](https://assimilai.dev/docs/when-not-to-use)
-- [Specification](https://assimilai.dev/spec) — formal schema
+- [npm CLI](https://citation-cli.culture.dev/npm) — full reference
+- [When Not to Use](https://citation-cli.culture.dev/when-not-to-use)
+- [Migration](https://citation-cli.culture.dev/migration) — from
+  assimilai v1 to citation-cli v2
+- [Specification](https://citation-cli.culture.dev/spec) — formal
+  schema
 
 ## License
 

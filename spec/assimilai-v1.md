@@ -1,3 +1,17 @@
+---
+title: Assimilai v1 (superseded)
+permalink: /spec/assimilai-v1/
+nav_exclude: true
+status: superseded
+superseded_by: citation-cli-v1.md
+---
+
+> **Superseded.** This document describes the legacy Assimilai v1
+> schema. The project has been renamed to **citation-cli** and the
+> schema revised. See
+> [citation-cli-v1.md](./citation-cli-v1.md) for the current spec,
+> and run `cite migrate` to convert existing manifests.
+
 # Assimilai Specification v1
 
 Version: 1.0.0

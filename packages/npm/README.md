@@ -1,53 +1,65 @@
-# assimilai
+# citation-cli
 
-Copy, don't import — track assimilated code in `package.json`.
+Cite, don't import — track cited code in `package.json` with
+**Quote / Paraphrase / Synthesize** semantics.
 
 ## Install
 
 ```bash
-npm install -g assimilai
+npm install -g citation-cli
 ```
 
 Or as a dev dependency:
 
 ```bash
-npm install --save-dev assimilai
+npm install --save-dev citation-cli
 ```
 
 ## Usage
 
-Record an assimilation — scans files in the target directory
-and records each with its sha256 hash in `package.json`:
+Record a citation — scans files in the target directory and records
+each as a quote with its sha256 hash in `package.json`:
 
 ```bash
-assimilai init my-pkg \
+cite add my-pkg \
   --source ../packages/ref \
   --version 1.0.0 \
   --target ./src/clients/my-pkg
 ```
 
-Check integrity of assimilated files — compares sha256 hashes
-of verbatim files, reports drift or missing files:
+Check integrity of cited files — compares sha256 hashes of quoted
+files, reports drift or missing files:
 
 ```bash
-assimilai check
+cite check
 ```
 
 Check a specific package:
 
 ```bash
-assimilai check my-pkg
+cite check my-pkg
 ```
 
 ### File status
 
 Files are tracked with one of three statuses:
 
-- **verbatim** — exact copy, sha256 recorded, checked for drift
-- **adapted** — intentionally modified, skipped during check
-- **dissolved** — merged into existing file, skipped during check
+- **quote** — exact copy, sha256 recorded, checked for drift
+- **paraphrase** — intentionally modified, skipped during check
+- **synthesize** — merged into an existing file, skipped during check
+
+### Migrating from `assimilai`
+
+If you have a legacy `"assimilai"` block in `package.json`, migrate
+it to the v2 `"citation"` schema with:
+
+```bash
+cite migrate
+```
+
+Use `--dry-run` to preview the translation without writing.
 
 ## Documentation
 
-- [Specification](https://assimilai.dev/spec)
-- [Website](https://assimilai.dev)
+- [Specification](https://citation-cli.culture.dev/spec)
+- [Website](https://citation-cli.culture.dev)

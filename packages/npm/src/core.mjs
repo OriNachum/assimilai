@@ -4,9 +4,19 @@ import { join, relative } from 'node:path';
 import {
   readPackageJson,
   writePackageJson,
-  getAssimilaiPackages,
-  setAssimilaiPackage,
+  getCitationPackages,
+  setCitationPackage,
 } from './json-io.mjs';
+
+export const SCHEMA_VERSION = 2;
+
+export const LEGACY_STATUS_MAP = {
+  verbatim: 'quote',
+  adapted: 'paraphrase',
+  dissolved: 'synthesize',
+};
+export const VALID_STATUSES = new Set(['quote', 'paraphrase', 'synthesize']);
+const SKIP_STATUSES = new Set(['paraphrase', 'synthesize']);
 
 function sha256(filePath) {
   const data = readFileSync(filePath);
@@ -27,7 +37,7 @@ function walkDir(dir) {
   return results.sort();
 }
 
-export function initAssimilation({ name, source, version, target, packageJsonPath }) {
+export function addCitation({ name, source, version, target, packageJsonPath }) {
   if (!existsSync(target) || !statSync(target).isDirectory()) {
     throw new Error(`target directory not found: ${target}`);
   }
@@ -43,28 +53,29 @@ export function initAssimilation({ name, source, version, target, packageJsonPat
   const files = {};
   for (const fp of filePaths) {
     const rel = relative(target, fp);
-    files[rel] = { status: 'verbatim', sha256: sha256(fp) };
+    files[rel] = { status: 'quote', sha256: sha256(fp) };
   }
 
   const entry = {
+    schema: SCHEMA_VERSION,
     source,
     version,
     target,
-    assimilated: new Date().toISOString().split('T')[0],
+    cited: new Date().toISOString().split('T')[0],
     files,
   };
 
-  setAssimilaiPackage(data, name, entry);
+  setCitationPackage(data, name, entry);
   writePackageJson(packageJsonPath, data);
   console.log(`recorded ${Object.keys(files).length} files for '${name}' in ${packageJsonPath}`);
 }
 
-export function checkAssimilation({ name = null, packageJsonPath }) {
+export function checkCitations({ name = null, packageJsonPath }) {
   const data = readPackageJson(packageJsonPath);
-  const packages = getAssimilaiPackages(data);
+  const packages = getCitationPackages(data);
 
   if (Object.keys(packages).length === 0) {
-    console.log('no assimilai packages found');
+    console.log('no citations found');
     return true;
   }
 
@@ -83,9 +94,9 @@ export function checkAssimilation({ name = null, packageJsonPath }) {
     console.log(`\nchecking '${pkgName}' (${Object.keys(files).length} files)`);
 
     for (const [filename, meta] of Object.entries(files)) {
-      const status = meta.status || 'verbatim';
+      const status = meta.status || 'quote';
 
-      if (status === 'adapted' || status === 'dissolved') {
+      if (SKIP_STATUSES.has(status)) {
         console.log(`  ${filename}: SKIP (${status})`);
         continue;
       }
@@ -116,4 +127,68 @@ export function checkAssimilation({ name = null, packageJsonPath }) {
   }
 
   return allOk;
+}
+
+export function migrateManifest({ packageJsonPath = 'package.json', dryRun = false } = {}) {
+  const data = readPackageJson(packageJsonPath);
+
+  if (data.citation) {
+    throw new Error(
+      `"citation" key already exists in ${packageJsonPath} — refusing to overwrite`
+    );
+  }
+  if (!data.assimilai) {
+    throw new Error(
+      `no "assimilai" key found in ${packageJsonPath} — nothing to migrate`
+    );
+  }
+
+  const legacyPackages = data.assimilai.packages || {};
+  let translatedFiles = 0;
+  const newPackages = {};
+
+  for (const [pkgName, pkg] of Object.entries(legacyPackages)) {
+    const newPkg = { schema: SCHEMA_VERSION };
+    for (const [key, value] of Object.entries(pkg)) {
+      if (key === 'files' || key === 'schema') continue;
+      if (key === 'assimilated') newPkg.cited = value;
+      else newPkg[key] = value;
+    }
+
+    const newFiles = {};
+    for (const [filename, meta] of Object.entries(pkg.files || {})) {
+      const status = meta.status || 'verbatim';
+      let newStatus;
+      if (status in LEGACY_STATUS_MAP) {
+        newStatus = LEGACY_STATUS_MAP[status];
+        translatedFiles += 1;
+      } else if (VALID_STATUSES.has(status)) {
+        newStatus = status;
+      } else {
+        throw new Error(
+          `unknown status '${status}' for file '${filename}' in package '${pkgName}'`
+        );
+      }
+      newFiles[filename] = { ...meta, status: newStatus };
+    }
+    newPkg.files = newFiles;
+    newPackages[pkgName] = newPkg;
+  }
+
+  if (dryRun) {
+    console.log(
+      `dry-run: would translate ${Object.keys(newPackages).length} package(s) ` +
+        `and ${translatedFiles} file status(es)`
+    );
+    return translatedFiles;
+  }
+
+  data.citation = { packages: newPackages };
+  delete data.assimilai;
+  writePackageJson(packageJsonPath, data);
+  console.log(
+    `migrated ${Object.keys(newPackages).length} package(s) ` +
+      `and ${translatedFiles} file status(es) to schema v${SCHEMA_VERSION}`
+  );
+  return translatedFiles;
 }

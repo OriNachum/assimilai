@@ -1,4 +1,4 @@
-name: Publish npm Package
+name: Publish citation-cli (npm)
 
 on:
   push:
@@ -47,9 +47,6 @@ jobs:
           node-version: "22"
           registry-url: "https://registry.npmjs.org"
 
-      - name: Update npm
-        run: npm install -g npm@latest
-
       - name: Set dev version
         run: |
           BASE=$(node -p "require('./package.json').version")
@@ -63,7 +60,7 @@ jobs:
 
       - name: Print install command
         run: |
-          echo "::notice::Package validated: assimilai@${DEV_VERSION} (dry-run only)"
+          echo "::notice::Package validated: citation-cli@${DEV_VERSION} (dry-run only)"
 
   publish:
     if: github.event_name == 'push'
@@ -81,9 +78,6 @@ jobs:
         with:
           node-version: "22"
           registry-url: "https://registry.npmjs.org"
-
-      - name: Update npm
-        run: npm install -g npm@latest
 
       - name: Publish to npm
         run: npm publish --provenance --access public

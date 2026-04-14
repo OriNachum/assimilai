@@ -1,27 +1,28 @@
 {
-  "name": "assimilai",
+  "name": "citation-cli",
   "version": "0.1.0",
-  "description": "Copy, don't import — track assimilated code in package.json",
+  "description": "Cite, don't import — track cited code in package.json with Quote / Paraphrase / Synthesize semantics",
   "type": "module",
   "bin": {
-    "assimilai": "bin/assimilai.mjs"
+    "cite": "bin/cite.mjs"
   },
   "files": [
     "bin/",
     "src/"
   ],
   "keywords": [
-    "assimilai",
+    "citation-cli",
+    "cite",
     "code-reuse",
     "monorepo",
     "agent"
   ],
   "author": "Ori Nachum",
   "license": "MIT",
-  "homepage": "https://assimilai.dev",
+  "homepage": "https://citation-cli.culture.dev",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/OriNachum/assimilai.git",
+    "url": "git+https://github.com/OriNachum/citation-cli.git",
     "directory": "packages/npm"
   },
   "engines": {

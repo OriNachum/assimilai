@@ -9,13 +9,13 @@ export function writePackageJson(path, data) {
   writeFileSync(path, JSON.stringify(data, null, 2) + '\n', 'utf8');
 }
 
-export function getAssimilaiPackages(data) {
-  return data?.assimilai?.packages || {};
+export function getCitationPackages(data) {
+  return data?.citation?.packages || {};
 }
 
-export function setAssimilaiPackage(data, name, entry) {
-  if (!data.assimilai) data.assimilai = {};
-  if (!data.assimilai.packages) data.assimilai.packages = {};
-  data.assimilai.packages[name] = entry;
+export function setCitationPackage(data, name, entry) {
+  if (!data.citation) data.citation = {};
+  if (!data.citation.packages) data.citation.packages = {};
+  data.citation.packages[name] = entry;
   return data;
 }
