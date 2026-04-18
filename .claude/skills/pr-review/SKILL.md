@@ -25,8 +25,12 @@ human reviewers. Know what each one posts and where so triage is fast:
 | `sonarqubecloud` | Quality Gate pass/fail + link to dashboard | **Issue comment** | Fix flagged issues; gate re-runs on push |
 | `cloudflare-workers-and-pages` | Deploy preview URL for the branch | **Issue comment** | **Ignore** — not feedback, just a preview link |
 
-SonarCloud project ID for this repo is `OriNachum_assimilai` (retained from
-the pre-rename project so history is preserved). Quality gate details live at
+The bot login is `sonarqubecloud`; the product it reports for is **SonarCloud**.
+Both names refer to the same thing — keep the backticked `sonarqubecloud` for
+the GitHub bot identity (e.g. when grepping comment authors) and use
+"SonarCloud" in prose. The SonarCloud project ID for this repo is
+`OriNachum_assimilai` (retained from the pre-rename project so history is
+preserved). Quality gate details live at
 `https://sonarcloud.io/dashboard?id=OriNachum_assimilai&pullRequest=<N>`.
 
 ## When to Use

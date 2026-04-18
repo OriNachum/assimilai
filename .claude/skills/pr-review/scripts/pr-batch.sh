@@ -5,18 +5,27 @@ set -euo pipefail
 # Each line: {"comment_id": 123, "body": "reply text"}
 # Usage: pr-batch.sh [--repo OWNER/REPO] [--resolve] PR_NUMBER < input.jsonl
 
+USAGE="Usage: pr-batch.sh [--repo OWNER/REPO] [--resolve] PR_NUMBER < input.jsonl"
 REPO=""
 RESOLVE=false
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        --repo) REPO="$2"; shift 2 ;;
+        --repo)
+            if [[ $# -lt 2 || -z "${2:-}" || "${2:0:1}" == "-" ]]; then
+                echo "Error: --repo requires a value." >&2
+                echo "$USAGE" >&2
+                exit 1
+            fi
+            REPO="$2"
+            shift 2
+            ;;
         --resolve) RESOLVE=true; shift ;;
         *) break ;;
     esac
 done
 
-PR_NUMBER="${1:?Usage: pr-batch.sh [--repo OWNER/REPO] [--resolve] PR_NUMBER < input.jsonl}"
+PR_NUMBER="${1:?$USAGE}"
 
 if [[ -z "$REPO" ]]; then
     REPO=$(gh repo view --json nameWithOwner -q .nameWithOwner)
@@ -35,11 +44,15 @@ while IFS= read -r line; do
     # Skip empty lines
     [[ -z "$line" ]] && continue
 
-    COMMENT_ID=$(echo "$line" | jq -r '.comment_id')
-    BODY=$(echo "$line" | jq -r '.body')
-
-    if [[ "$COMMENT_ID" == "null" || "$BODY" == "null" ]]; then
-        echo "SKIP: invalid line: $line"
+    # Use jq -e so non-JSON or missing-field lines surface a clear SKIP
+    # instead of aborting the whole batch under `set -e`.
+    if ! COMMENT_ID=$(jq -er '.comment_id' <<<"$line" 2>/dev/null); then
+        echo "SKIP: invalid comment_id in line: $line"
+        ((FAIL++)) || true
+        continue
+    fi
+    if ! BODY=$(jq -er '.body' <<<"$line" 2>/dev/null); then
+        echo "SKIP: invalid body in line: $line"
         ((FAIL++)) || true
         continue
     fi
