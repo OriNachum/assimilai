@@ -90,7 +90,7 @@ def main(argv: list[str] | None = None) -> None:
     elif args.command == "sync":
         print(
             "cite sync: not yet implemented. Scheduled for 0.2.0.\n"
-            "See https://citation-cli.culture.dev/spec/#propagation for the "
+            "See https://culture.dev/citation-cli/spec/#propagation for the "
             "propagation rules the command will follow."
         )
         sys.exit(2)

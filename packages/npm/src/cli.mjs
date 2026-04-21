@@ -93,7 +93,7 @@ export function run(argv) {
   } else if (command === 'sync') {
     console.log(
       'cite sync: not yet implemented. Scheduled for 0.2.0.\n' +
-        'See https://citation-cli.culture.dev/spec/#propagation for the ' +
+        'See https://culture.dev/citation-cli/spec/#propagation for the ' +
         'propagation rules the command will follow.'
     );
     process.exit(2);

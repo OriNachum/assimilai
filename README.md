@@ -61,15 +61,15 @@ cite migrate --dry-run   # preview
 
 ## Documentation
 
-- [The Concept](https://citation-cli.culture.dev/concept) — why
+- [The Concept](https://culture.dev/citation-cli/concept) — why
   cite beats import
-- [Python CLI](https://citation-cli.culture.dev/python) — full
+- [Python CLI](https://culture.dev/citation-cli/python) — full
   reference
-- [npm CLI](https://citation-cli.culture.dev/npm) — full reference
-- [When Not to Use](https://citation-cli.culture.dev/when-not-to-use)
-- [Migration](https://citation-cli.culture.dev/migration) — from
+- [npm CLI](https://culture.dev/citation-cli/npm) — full reference
+- [When Not to Use](https://culture.dev/citation-cli/when-not-to-use)
+- [Migration](https://culture.dev/citation-cli/migration) — from
   assimilai v1 to citation-cli v2
-- [Specification](https://citation-cli.culture.dev/spec) — formal
+- [Specification](https://culture.dev/citation-cli/spec) — formal
   schema
 
 ## License
