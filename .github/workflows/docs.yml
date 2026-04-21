@@ -47,9 +47,24 @@ jobs:
           ruby-version: "3.3"
           bundler-cache: true
 
-      - run: bundle exec jekyll build
+      # On PR previews the site is served from the `*.pages.dev` root,
+      # not from `culture.dev/citation-cli/`, so building with the
+      # config's `baseurl: /citation-cli` would 404 every internal link
+      # on the preview host (theme assets, nav, in-page links all use
+      # `relative_url`, which prefixes baseurl). Override to empty on
+      # PRs only; push / workflow_dispatch keep the config default so
+      # production output matches the `culture.dev/citation-cli/*`
+      # subpath the CF Worker routes to.
+      - name: Build Jekyll site
         env:
           JEKYLL_ENV: production
+          IS_PR: ${{ github.event_name == 'pull_request' }}
+        run: |
+          if [ "$IS_PR" = "true" ]; then
+            bundle exec jekyll build --baseurl ""
+          else
+            bundle exec jekyll build
+          fi
 
       # Compute the Cloudflare Pages branch name from the PR's head ref.
       # CF Pages uses the branch name as a subdomain component, so only
