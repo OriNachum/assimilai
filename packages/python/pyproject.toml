@@ -30,6 +30,6 @@ dev = ["pytest>=7.0"]
 cite = "citation_cli.cli:main"
 
 [project.urls]
-Homepage = "https://citation-cli.culture.dev"
+Homepage = "https://culture.dev/citation-cli"
 Repository = "https://github.com/OriNachum/citation-cli"
-Specification = "https://citation-cli.culture.dev/spec"
+Specification = "https://culture.dev/citation-cli/spec"

@@ -61,5 +61,5 @@ Use `--dry-run` to preview the translation without writing.
 
 ## Documentation
 
-- [Specification](https://citation-cli.culture.dev/spec)
-- [Website](https://citation-cli.culture.dev)
+- [Specification](https://culture.dev/citation-cli/spec)
+- [Website](https://culture.dev/citation-cli)
